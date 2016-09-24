@@ -1,0 +1,24 @@
+import urllib
+from BeautifulSoup import *
+#You must have the BeatifulSoup installed
+
+url = raw_input('http://pornpassw0rds.com/tag/brazzers/')
+html = urllib.urlopen(url).read()
+
+soup = BeautifulSoup(html)
+
+# Retrieve all of the anchor tags
+tags = soup('p')
+
+final = dict()
+for tag in tags:
+    # Look at the parts of a tag
+    if  'http://ma.brazzers.com' in str(tag.contents[0]):
+        for x in tag.contents[1:][1::2]:
+		    y = str(x).strip().split(':')
+		    final[y[0]] = y[1]
+
+with open('senhas.txt', 'w') as file:
+    for x in final:
+        result = 'User> %s\nsenha> %s\n\n' % (x, final[x])
+        file.write(result)
